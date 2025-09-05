@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://lamauricette.fr/wp-content/uploads/2025/04/nocturne.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mauricette - Nocturne</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #FFFFFF; /* Fond blanc initial */
+            font-family: sans-serif;
+            touch-action: manipulation;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            position: relative; /* Contexte de positionnement pour les enfants absolus */
+            display: flex;
+            flex-direction: column; /* Aligner logo et bouton */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #logo {
+            max-width: 60%;
+            max-height: 60vh;
+            height: auto;
+            margin-bottom: 30px;
+            display: block;
+            position: relative; /* Position relative par défaut, mais on va le mettre au-dessus avec z-index */
+            z-index: 3; /* Logo au-dessus de tout */
+        }
+
+        #startButton {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s ease;
+            position: relative; /* Pour être cliquable */
+            z-index: 3; /* Bouton au-dessus */
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
+
+        #colorDisplay {
+            width: 100%; /* Prend toute la largeur du conteneur */
+            height: 100%; /* Prend toute la hauteur du conteneur */
+            position: absolute; /* Positionné absolument par rapport à #container */
+            top: 0;
+            left: 0;
+            display: none; /* Caché initialement */
+            z-index: 1; /* Derrière le logo et le bouton */
+        }
+
+        /* Media query pour ajuster la taille sur petits écrans */
+        @media (max-width: 600px) {
+            #logo {
+                max-width: 80%;
+            }
+            #startButton {
+                font-size: 1.2em;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur principal qui gère le positionnement -->
+    <div id="container">
+        <img id="logo" src="http://www.france-electrique-tour.com/wp-content/uploads/2025/09/1.png" alt="Logo Mauricette">
+        <button id="startButton">Lancer</button>
+        <!-- La div pour le changement de couleur est maintenant DANS le conteneur -->
+        <div id="colorDisplay"></div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById("startButton");
+        const colorDisplay = document.getElementById("colorDisplay");
+        const logo = document.getElementById("logo");
+        const body = document.body;
+
+        startButton.addEventListener("click", () => {
+            startButton.style.display = "none"; // Masquer le bouton
+            logo.style.marginBottom = "0"; // Optionnel: supprimer la marge si le bouton disparaît
+            colorDisplay.style.display = "block"; // Afficher la zone de couleur
+            body.style.backgroundColor = "#000"; // Fond noir derrière la zone colorée si besoin
+
+            const colors = ["#0055A4", "#FFFFFF", "#EF4135", "#FFFF00", "#00FF00"];
+            let colorIndex = 0;
+            let timeoutId = null;
+
+            function getRandomInterval() {
+                return Math.floor(Math.random() * 200) + 100;
+            }
+
+            function changeBackgroundColor() {
+                colorDisplay.style.backgroundColor = colors[colorIndex];
+                colorIndex = (colorIndex + 1) % colors.length;
+                timeoutId = setTimeout(changeBackgroundColor, getRandomInterval());
+            }
+
+            if (timeoutId) clearTimeout(timeoutId);
+            changeBackgroundColor();
+
+            try {
+                if (navigator.wakeLock) {
+                    navigator.wakeLock.request("screen").catch(err => console.error(`${err.name}, ${err.message}`));
+                } else {
+                    console.warn("API Wake Lock non supportée.");
+                }
+            } catch (err) {
+                console.error(`Erreur Wake Lock: ${err.name}, ${err.message}`);
+            }
+        });
+
+        document.body.addEventListener("touchmove", function(event) {
+            event.preventDefault();
+        }, { passive: false });
+    </script>
+
+
+
+</body>	<xpather id="xpather">		<form id="xpather-form">			<input id="xpather-xpath" type="text" placeholder="enter XPath…" autocomplete="off" spellcheck="false">		</form> 		<xpather id="xpather-result"></xpather>		<xpather id="xpather-sidebar-toggler"></xpather>	</xpather>	<xpather id="xpather-sidebar">		<xpather id="xpather-sidebar-spacer"></xpather>		<xpather id="xpather-sidebar-entries"></xpather>	</xpather></html>
